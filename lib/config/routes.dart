@@ -24,9 +24,10 @@ class AppRoutes {
   static const String settings = '/settings';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(
+    return PageRouteBuilder(
       settings: settings,
-      builder: (context) {
+      transitionDuration: const Duration(milliseconds: 220),
+      pageBuilder: (context, animation, secondaryAnimation) {
         final auth = context.read<AuthProvider?>();
         final isAuthed = auth?.user != null;
         switch (settings.name) {
@@ -54,6 +55,25 @@ class AppRoutes {
             }
             return const LoginScreen();
         }
+      },
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        if (settings.name == login || settings.name == main) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        }
+        final tween = Tween<Offset>(
+          begin: const Offset(0, 0.1),
+          end: Offset.zero,
+        ).chain(CurveTween(curve: Curves.easeOut));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
       },
     );
   }
