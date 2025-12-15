@@ -33,6 +33,7 @@ class MoodScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'moodFab',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(

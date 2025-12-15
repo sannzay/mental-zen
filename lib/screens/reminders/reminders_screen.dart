@@ -62,6 +62,7 @@ class RemindersScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'remindersFab',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(

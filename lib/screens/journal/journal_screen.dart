@@ -33,6 +33,7 @@ class JournalScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'journalFab',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
