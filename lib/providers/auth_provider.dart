@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -13,13 +14,33 @@ class AuthProvider extends ChangeNotifier {
   User? user;
   bool isLoading = false;
   String? errorMessage;
+  bool _isValidatingUser = false;
   late final StreamSubscription<User?> _authSubscription;
 
   AuthProvider(this._authService, this._firestore) {
-    _authSubscription = _authService.authStateChanges().listen((event) {
+    _authSubscription = _authService.authStateChanges().listen((event) async {
       user = event;
+      if (event != null && !_isValidatingUser) {
+        await _validateUserDocument(event.uid);
+      }
       notifyListeners();
     });
+  }
+
+  Future<void> _validateUserDocument(String uid) async {
+    _isValidatingUser = true;
+    try {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (!doc.exists) {
+        await _authService.signOut();
+        user = null;
+      }
+    } catch (_) {
+      await _authService.signOut();
+      user = null;
+    } finally {
+      _isValidatingUser = false;
+    }
   }
 
   Future<void> signIn(String email, String password) async {
@@ -53,11 +74,24 @@ class AuthProvider extends ChangeNotifier {
           settings: const {},
         );
         await _firestore.upsertUser(userModel);
+        final doc = await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).get();
+        if (!doc.exists) {
+          await _authService.signOut();
+          errorMessage = 'Failed to create user profile. Please try again.';
+        }
       }
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
-    } catch (_) {
-      errorMessage = 'Something went wrong';
+      final firebaseUser = _authService.currentUser;
+      if (firebaseUser != null) {
+        await _authService.signOut();
+      }
+    } catch (e) {
+      errorMessage = 'Something went wrong: ${e.toString()}';
+      final firebaseUser = _authService.currentUser;
+      if (firebaseUser != null) {
+        await _authService.signOut();
+      }
     } finally {
       _setLoading(false);
     }

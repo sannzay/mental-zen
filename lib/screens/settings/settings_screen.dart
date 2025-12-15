@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/theme.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../widgets/common/zen_app_bar.dart';
 import '../reminders/reminders_screen.dart';
@@ -68,6 +69,23 @@ class SettingsScreen extends StatelessWidget {
                   subtitle: const Text('Learn how your data is stored securely'),
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () {},
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Account',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  title: const Text('Sign out'),
+                  subtitle: const Text('Sign out of your account'),
+                  trailing: const Icon(Icons.logout_rounded),
+                  onTap: () async {
+                    final auth = context.read<AuthProvider?>();
+                    if (auth != null) {
+                      await auth.signOut();
+                    }
+                  },
                 ),
                 const SizedBox(height: 16),
                 Text(
