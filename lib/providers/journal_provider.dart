@@ -121,9 +121,14 @@ class JournalProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      _entries.insert(0, entry);
+      final userId = _userId;
+      if (userId == null) {
+        return;
+      }
+      final withUser = entry.copyWith(userId: userId);
+      _entries.insert(0, withUser);
       notifyListeners();
-      await _firestore.createJournalEntry(entry);
+      await _firestore.createJournalEntry(withUser);
     } catch (_) {
       errorMessage = 'Unable to save entry';
     } finally {
@@ -140,12 +145,17 @@ class JournalProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      final index = _entries.indexWhere((e) => e.id == entry.id);
+      final userId = _userId;
+      if (userId == null) {
+        return;
+      }
+      final withUser = entry.copyWith(userId: userId);
+      final index = _entries.indexWhere((e) => e.id == withUser.id);
       if (index != -1) {
-        _entries[index] = entry;
+        _entries[index] = withUser;
       }
       notifyListeners();
-      await _firestore.updateJournalEntry(entry);
+      await _firestore.updateJournalEntry(withUser);
     } catch (_) {
       errorMessage = 'Unable to update entry';
     } finally {

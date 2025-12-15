@@ -102,9 +102,14 @@ class MoodProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      _entries.insert(0, entry);
+      final userId = _userId;
+      if (userId == null) {
+        return;
+      }
+      final withUser = entry.copyWith(userId: userId);
+      _entries.insert(0, withUser);
       notifyListeners();
-      await _firestore.createMoodEntry(entry);
+      await _firestore.createMoodEntry(withUser);
     } catch (_) {
       errorMessage = 'Unable to save mood';
     } finally {
@@ -121,12 +126,17 @@ class MoodProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      final index = _entries.indexWhere((e) => e.id == entry.id);
+      final userId = _userId;
+      if (userId == null) {
+        return;
+      }
+      final withUser = entry.copyWith(userId: userId);
+      final index = _entries.indexWhere((e) => e.id == withUser.id);
       if (index != -1) {
-        _entries[index] = entry;
+        _entries[index] = withUser;
       }
       notifyListeners();
-      await _firestore.updateMoodEntry(entry);
+      await _firestore.updateMoodEntry(withUser);
     } catch (_) {
       errorMessage = 'Unable to update mood';
     } finally {

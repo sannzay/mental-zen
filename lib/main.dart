@@ -39,11 +39,14 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
           create: (_) => AuthService(),
         ),
-        ChangeNotifierProvider<AuthProvider>(
-          create: (context) => AuthProvider(context.read<AuthService>()),
-        ),
         Provider<FirestoreService>(
           create: (_) => FirestoreService(),
+        ),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (context) => AuthProvider(
+            context.read<AuthService>(),
+            context.read<FirestoreService>(),
+          ),
         ),
         Provider<CacheService>.value(value: cache),
         ChangeNotifierProvider<ThemeProvider>(
