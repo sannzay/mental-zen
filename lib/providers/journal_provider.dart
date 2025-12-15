@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../models/journal_entry.dart';
 import '../services/firestore_service.dart';
@@ -120,6 +121,8 @@ class JournalProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      _entries.insert(0, entry);
+      notifyListeners();
       await _firestore.createJournalEntry(entry);
     } catch (_) {
       errorMessage = 'Unable to save entry';
@@ -137,6 +140,11 @@ class JournalProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      final index = _entries.indexWhere((e) => e.id == entry.id);
+      if (index != -1) {
+        _entries[index] = entry;
+      }
+      notifyListeners();
       await _firestore.updateJournalEntry(entry);
     } catch (_) {
       errorMessage = 'Unable to update entry';
@@ -154,6 +162,8 @@ class JournalProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      _entries.removeWhere((e) => e.id == id);
+      notifyListeners();
       await _firestore.deleteJournalEntry(_userId!, id);
     } catch (_) {
       errorMessage = 'Unable to delete entry';

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../models/mood_entry.dart';
 import '../services/firestore_service.dart';
@@ -101,6 +102,8 @@ class MoodProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      _entries.insert(0, entry);
+      notifyListeners();
       await _firestore.createMoodEntry(entry);
     } catch (_) {
       errorMessage = 'Unable to save mood';
@@ -118,6 +121,11 @@ class MoodProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      final index = _entries.indexWhere((e) => e.id == entry.id);
+      if (index != -1) {
+        _entries[index] = entry;
+      }
+      notifyListeners();
       await _firestore.updateMoodEntry(entry);
     } catch (_) {
       errorMessage = 'Unable to update mood';
@@ -135,6 +143,8 @@ class MoodProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
+      _entries.removeWhere((e) => e.id == id);
+      notifyListeners();
       await _firestore.deleteMoodEntry(_userId!, id);
     } catch (_) {
       errorMessage = 'Unable to delete mood';
