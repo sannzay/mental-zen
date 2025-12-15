@@ -160,15 +160,36 @@ class _MoodContentState extends State<_MoodContent> {
               'Recent moods',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            TextButton(
-              onPressed: () {
+            InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => const MoodHistoryScreen(),
                   ),
                 );
               },
-              child: const Text('View history'),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'View history',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.chevron_right_rounded,
+                      size: 18,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
