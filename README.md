@@ -118,7 +118,7 @@ Experience Mental Zen through these screenshots showcasing the app's clean, mode
 #### 🏠 Home Dashboard
 
 <div align="center">
-  <img src="UI_Screens/Screenshot 2025-12-16 at 3.22.27 AM.png" alt="Home Dashboard" width="300"/>
+  <img src="UI_Screens/home-dashboard.png" alt="Home Dashboard" width="300"/>
   <p><em>Personalized greeting with gradient hero card, today's mood card, quick stats (streak & weekly entries), and one-tap actions for logging mood or creating journal entries</em></p>
 </div>
 
@@ -130,11 +130,11 @@ Experience Mental Zen through these screenshots showcasing the app's clean, mode
   <table>
     <tr>
       <td align="center" width="50%">
-        <img src="UI_Screens/Screenshot 2025-12-16 at 3.22.39 AM.png" alt="Add Mood Screen" width="300"/>
+        <img src="UI_Screens/add-mood.png" alt="Add Mood Screen" width="300"/>
         <p><strong>Add Mood</strong><br/><em>Log your daily mood with an intuitive slider (1-10), add optional notes, and see instant visual feedback</em></p>
       </td>
       <td align="center" width="50%">
-        <img src="UI_Screens/Screenshot 2025-12-16 at 3.22.51 AM.png" alt="Mood History" width="300"/>
+        <img src="UI_Screens/mood-history.png" alt="Mood History" width="300"/>
         <p><strong>Mood History</strong><br/><em>Browse your mood entries chronologically, view weekly averages, and track your emotional patterns</em></p>
       </td>
     </tr>
@@ -149,11 +149,11 @@ Experience Mental Zen through these screenshots showcasing the app's clean, mode
   <table>
     <tr>
       <td align="center" width="50%">
-        <img src="UI_Screens/Screenshot 2025-12-16 at 3.23.10 AM.png" alt="Journal List" width="300"/>
+        <img src="UI_Screens/journal-list.png" alt="Journal List" width="300"/>
         <p><strong>Journal Entries</strong><br/><em>Browse all your reflections with filters (all/favorites/recent), search functionality, and quick access to entries</em></p>
       </td>
       <td align="center" width="50%">
-        <img src="UI_Screens/Screenshot 2025-12-16 at 3.23.19 AM.png" alt="Add Journal Entry" width="300"/>
+        <img src="UI_Screens/add-journal.png" alt="Add Journal Entry" width="300"/>
         <p><strong>Create Entry</strong><br/><em>Write rich journal entries with titles, content, tags, and mark favorites for easy access later</em></p>
       </td>
     </tr>
@@ -165,7 +165,7 @@ Experience Mental Zen through these screenshots showcasing the app's clean, mode
 #### 📊 Insights & Analytics
 
 <div align="center">
-  <img src="UI_Screens/Screenshot 2025-12-16 at 3.23.31 AM.png" alt="Insights Screen" width="300"/>
+  <img src="UI_Screens/insights.png" alt="Insights Screen" width="300"/>
   <p><em>Visualize your wellness journey with interactive charts showing mood trends over time, distribution analysis, streaks, and journaling activity statistics</em></p>
 </div>
 
@@ -174,7 +174,7 @@ Experience Mental Zen through these screenshots showcasing the app's clean, mode
 #### 🧘 Mindfulness & Wellness
 
 <div align="center">
-  <img src="UI_Screens/Screenshot 2025-12-16 at 3.23.46 AM.png" alt="Mindfulness Screen" width="300"/>
+  <img src="UI_Screens/mindfulness.png" alt="Mindfulness Screen" width="300"/>
   <p><em>Access guided breathing exercises with animated visual feedback, daily wellness tips, and motivational quotes to support your mental wellness journey</em></p>
 </div>
 
