@@ -31,22 +31,10 @@ class NotificationService {
   Future<void> scheduleReminder(Reminder reminder) async {
     await init();
     final id = _idForReminder(reminder.id);
-    final parts = reminder.time.split(':');
-    if (parts.length != 2) {
-      return;
-    }
-    final hour = int.tryParse(parts[0]) ?? 0;
-    final minute = int.tryParse(parts[1]) ?? 0;
-    final now = DateTime.now();
-    DateTime scheduled = DateTime(now.year, now.month, now.day, hour, minute);
-    if (scheduled.isBefore(now)) {
-      scheduled = scheduled.add(const Duration(days: 1));
-    }
-    await _plugin.zonedSchedule(
+    await _plugin.show(
       id,
       reminder.title,
       reminder.message,
-      TZDateTime.from(scheduled, local),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'mental_zen_channel',
@@ -56,9 +44,6 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time,
       payload: reminder.id,
     );
   }

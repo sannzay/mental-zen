@@ -23,14 +23,14 @@ class AppRoutes {
   static const String insights = '/insights';
   static const String settings = '/settings';
 
-  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+  static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     return PageRouteBuilder(
-      settings: settings,
+      settings: routeSettings,
       transitionDuration: const Duration(milliseconds: 220),
       pageBuilder: (context, animation, secondaryAnimation) {
         final auth = context.read<AuthProvider?>();
         final isAuthed = auth?.user != null;
-        switch (settings.name) {
+        switch (routeSettings.name) {
           case login:
             return const LoginScreen();
           case register:
@@ -57,7 +57,7 @@ class AppRoutes {
         }
       },
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        if (settings.name == login || settings.name == main) {
+        if (routeSettings.name == login || routeSettings.name == main) {
           return FadeTransition(
             opacity: animation,
             child: child,

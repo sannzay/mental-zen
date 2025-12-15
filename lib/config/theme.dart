@@ -36,14 +36,6 @@ ThemeData buildLightTheme() {
       foregroundColor: AppColors.textPrimary,
       centerTitle: true,
     ),
-    cardTheme: CardTheme(
-      color: AppColors.surface,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      margin: EdgeInsets.zero,
-    ),
     inputDecorationTheme: const InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
