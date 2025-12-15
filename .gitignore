@@ -1,2 +1,20 @@
 Final project Proposal.pdf
 plan.md
+
+# Flutter / Dart
+.dart_tool/
+.packages
+
+# Build outputs
+build/
+**/build/
+
+# Android APKs / bundles
+*.apk
+*.aab
+
+# iOS
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Runner/GeneratedPluginRegistrant.*
