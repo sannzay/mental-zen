@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 
 import '../models/reminder.dart';
 import '../services/firestore_service.dart';
+import '../services/notification_service.dart';
 
 class ReminderProvider extends ChangeNotifier {
   final FirestoreService _firestore;
+  final NotificationService _notifications = NotificationService();
   String? _userId;
   final List<Reminder> _reminders = [];
   bool isLoading = false;
@@ -39,6 +41,7 @@ class ReminderProvider extends ChangeNotifier {
         isLoading = false;
         errorMessage = null;
         notifyListeners();
+        _rescheduleAll();
       },
       onError: (_) {
         isLoading = false;
@@ -56,7 +59,9 @@ class ReminderProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      await _firestore.createReminder(reminder);
+      final withUser = reminder.copyWith(userId: _userId);
+      await _firestore.createReminder(withUser);
+      await _notifications.scheduleReminder(withUser);
     } catch (_) {
       errorMessage = 'Unable to save reminder';
     } finally {
@@ -73,7 +78,13 @@ class ReminderProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      await _firestore.updateReminder(reminder);
+      final withUser = reminder.copyWith(userId: _userId);
+      await _firestore.updateReminder(withUser);
+      if (withUser.isEnabled) {
+        await _notifications.scheduleReminder(withUser);
+      } else {
+        await _notifications.cancelReminder(withUser.id);
+      }
     } catch (_) {
       errorMessage = 'Unable to update reminder';
     } finally {
@@ -91,11 +102,23 @@ class ReminderProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await _firestore.deleteReminder(_userId!, id);
+      await _notifications.cancelReminder(id);
     } catch (_) {
       errorMessage = 'Unable to delete reminder';
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> toggleReminder(Reminder reminder, bool enabled) {
+    return updateReminder(reminder.copyWith(isEnabled: enabled));
+  }
+
+  Future<void> _rescheduleAll() async {
+    await _notifications.cancelAll();
+    for (final reminder in _reminders.where((r) => r.isEnabled)) {
+      await _notifications.scheduleReminder(reminder);
     }
   }
 
